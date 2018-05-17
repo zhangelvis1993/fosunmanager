@@ -1,0 +1,179 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+	    <h1><b>課程資訊</b></h1>
+        <form class="form-inline" method="post">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="year">年份:</label>
+                    <select class="form-control" id="year" name ="year">
+                    {% if require1 =='0' or require1 == None%}
+                        <option selected="selected" value="0">全選</option>
+                        {% for i in range(100,150) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="0">全選</option>
+                        {% for i in range(100,150) %}
+                            {% if i|string == require1 %}
+                            <option value='{{ i }}' selected="selected">{{ i }}</option>
+                            {% else %}
+                            <option value='{{ i }}'>{{ i }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="month">&nbsp;&nbsp;&nbsp;月份:</label>
+                    <select class="form-control" id="month" name ="month">
+                        {% if require2 =='0' or require2 == None%}
+                            <option selected="selected" value="0">全選</option>
+                            {% for i in range(1,13) %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="0">全選</option>
+                        {% for i in range(1,13) %}
+                            {% if i|string == require2 %}
+                                <option value='{{ i }}' selected="selected">{{ i }}</option>
+                            {% else %}
+                                <option value='{{ i }}'>{{ i }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="class">&nbsp;&nbsp;&nbsp;分類:</label>
+                    <select class="form-control" id="class" name ="class">
+                        {% if require3 =='0' or require3 == None%}
+                            <option selected="selected" value="0">全選</option>
+                            {% for i in ['樂齡核心課程','自主規劃課程','貢獻服務課程','樂齡自主社團'] %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="0">全選</option>
+                        {% for i in ['樂齡核心課程','自主規劃課程','貢獻服務課程','樂齡自主社團'] %}
+                            {% if i == require3 %}
+                                <option value='{{ i }}' selected="selected">{{ i }}</option>
+                            {% else %}
+                                <option value='{{ i }}'>{{ i }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="region">&nbsp;&nbsp;&nbsp;地區:</label>
+                    <select class="form-control" id="region" name ="region">
+                        {% if require4 =='0' or require4 == None%}
+                            <option selected="selected" value="0">全選</option>
+                            {% for i in region_list %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="0">全選</option>
+                        {% for i in region_list %}
+                            {% if i == require4 %}
+                                <option value='{{ i }}' selected="selected">{{ i }}</option>
+                            {% else %}
+                                <option value='{{ i }}'>{{ i }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-default btn-info">查詢</button>
+                &nbsp;&nbsp;
+                <a href='/admin/search_course_reset' class="btn btn-warning">清除篩選條件</a>
+                <a href='/admin/add_course' class="btn btn-default btn-info" style="float: right">新增</a>
+                <a href='/admin/search_course/courses_download{{ cjson }}' class="btn btn-default btn-danger" style="float: right">下載以下課程</a>
+            </div>
+        </form>
+	    <div class="row table-responsive">
+		    <div class="col-sm-12">
+			    <table class="table table-bordered table-hover" id="DataTable" style="word-break: break-all; font-size: large">
+  				    <thead>
+					    <tr>
+						    <th style="width: 100px">課程</th>
+                            <th style="width: 70px">課程類型</th>
+						    <th style="width: 90px">開課時間</th>
+						    <th style="width: 40px">教師</th>
+						    <th style="width: 100px">地點</th>
+						    <th style="width: 50px">限制人數</th>
+                            <th style="width: 70px">操作</th>
+				    	</tr>
+				    </thead>
+			    	<tbody>
+                        {% for i in range(lens) %}
+                            <tr>
+                                {% for ii in range(6) %}
+                                    {% if ii == 5 %}
+                                        <td>{{ number[i] }} / {{ course_list[i][ii] }}</td>
+                                    {% else %}
+                                        <td>{{ course_list[i][ii] }}</td>
+                                    {% endif %}
+                                {% endfor %}
+						    	<td><a class="fa fa-info-circle fa-lg" href="/admin/search_course/U_Have_A_Preview_Message{{ course_dict[i] }}" title="瀏覽詳情"></a>
+							    	<a class="fa fa-pencil-square-o fa-lg" href="/admin/search_course/U_Have_A_Updata_Message{{ course_dict[i] }}" title="更新資料"></a>
+                                    <a class="fa fa-floppy-o fa-lg" href="/admin/search_course/soc_download{{ course_dict[i] }}" title="保存學生名單"></a>
+                                    <a class="fa fa-check-square-o fa-lg" href="/admin/search_course/Enroll{{ course_dict[i] }}" title="課程招生"></a>
+                                    &nbsp;&nbsp;
+							    	<a class="fa fa-trash-o fa-lg delete" href="/admin/search_course/U_Have_A_Delete_Message{{ course_dict[i] }}" title="刪除該條"></a>
+							    </td>
+						    </tr>
+                        {% endfor %}
+				    </tbody>
+    			</table>
+	    	</div>
+	    </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var table = $('#DataTable').DataTable({
+            language: {
+                "sProcessing": "處理中...",
+                "sLengthMenu": "顯示 _MENU_ 項結果",
+                "sZeroRecords": "沒有匹配結果",
+                "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                "sInfoFiltered": "(由 _MAX_ 項結果過濾)",
+                "sInfoPostFix": "",
+                "sSearch": "搜尋:",
+                "sUrl": "",
+                "sEmptyTable": "表中數據為空",
+                "sLoadingRecords": "載入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首頁",
+                    "sPrevious": "上頁",
+                    "sNext": "下頁",
+                    "sLast": "末頁"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列",
+                    "sSortDescending": ": 以降序排列"
+                }
+            },
+            dom:
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [
+                {
+                    text: '新增',
+                    className: 'btn-info',
+                    action: function ( e, dt, node, config ) {
+                        location.href = '/admin/add_course';
+                    }
+                }
+                ],
+            "bSort": false
+        });
+        table.on('click', '.delete', function(){
+            return confirm('是否確定刪除這筆資料？');
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,314 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+        <div>
+            <div class="form-group">
+                {% if get_flashed_messages() %}
+                    <div class="alert alert-warning">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong></strong>
+                        {% for message in get_flashed_messages() %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <h2>修改課程資料</h2>
+        <div class="row">
+            <form role="form" id="addcourse" method="post">
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_name" style="font-size: 20px">課程名稱</label>
+                        <input type="text" class="form-control" placeholder="填入課程名稱" name="course_name" id="course_name" value="{{ course_dict['name'] }}">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-9">
+				    <div class="form-group">
+					    <label style="font-size: 20px">開課時間</label>
+                        <div>
+                            <label for="course_y" style="float: left">年份&nbsp;</label>
+                            <select class="form-control" id="course_y" name="course_y" style="width: 80px;float: left">
+                                {% for i in range(100, 150) %}
+                                    {% if i == course_dict['year'] %}
+                                        <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                    {% else %}
+                                        <option value='{{ i }}'>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="course_m" style="float: left">月份&nbsp;</label>
+                            <select class="form-control" id="course_m" name="course_m" style="width: 70px;float: left">
+                                {% for i in range(1, 13) %}
+                                    {% if i == course_dict['start_m'] %}
+                                        <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                    {% else %}
+                                        <option value='{{ i }}'>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="course_d" style="float: left">日期&nbsp;</label>
+                            <select class="form-control" id="course_d" name="course_d" style="width: 70px;float: left">
+                                {% for i in range(1, 32) %}
+                                    {% if i == course_dict['start_d'] %}
+                                        <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                    {% else %}
+                                        <option value='{{ i }}'>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="course_w" style="float: left">星期&nbsp;</label>
+                            <select class="form-control" id="course_w" name="course_w" style="width: 70px;float: left">
+                                {% for i in ['一','二','三','四','五','六','日'] %}
+                                    {% if i == course_dict['start_w'] %}
+                                        <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                    {% else %}
+                                        <option value='{{ i }}'>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="course_t" style="float: left">時刻&nbsp;</label>
+                            <select class="form-control" id="course_t" name="course_t" style="width: 90px;float: left">
+                                {% for i in ['5:00','5:30','6:00','6:30','7:00','7:30','8:00','8:30','9:00','9:30','10:00',
+                                '10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30',
+                                '16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'] %}
+                                    {% if i == course_dict['start_t'] %}
+                                        <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                    {% else %}
+                                        <option value='{{ i }}'>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="clearfix" style="height: 15px"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_region" style="font-size: 20px">開課地點</label>
+                        <div class="clearfix"></div>
+                        <div style="float: left">
+                            <select class="form-control" id="course_region" name="course_region" style="width: 200px">
+                            {% for i in region_list %}
+                                {% if i == course_dict['region'] %}
+                                    <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                {% else %}
+                                    <option value='{{ i }}'>{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <div class="dt-buttons btn-group" style="float: left">
+                            <a class="btn btn-default btn-info" href="/admin/add_course_region">
+                                <span>添加新地點</span>
+                            </a>
+                        </div>
+                        <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <div class="dt-buttons btn-group" style="float: left">
+                            <a class="btn btn-default btn-info" href="/admin/del_course_region">
+                                <span>刪除地點</span>
+                            </a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_times" style="font-size: 20px">辦理場次</label>
+                        <div>
+                            <input type="text" class="form-control" placeholder="填入辦理場次" name="course_times" id="course_times" style="width: 150px;float: left" value="{{ course_dict['times'] }}">
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="course_duration" style="float: left">每堂課時長&nbsp;</label>
+                            <select class="form-control" id="course_duration" name="course_duration" style="width: 90px;float: left">
+                                {% for i in ['0.5','1','1.5','2','2.5','3','3.5','4','4.5','5'] %}
+                                    {% if i|float == course_dict['duration'] %}
+                                        <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                    {% else %}
+                                        <option value='{{ i }}'>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="clearfix" style="height: 15px"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <div class="clearfix"></div>
+                        <label for="course_class" style="font-size: 20px">課程類型</label>
+                        <select class="form-control" id="course_class" name="course_class" style="width: 150px">
+                            {% for i in ['樂齡核心課程','自主規劃課程','貢獻服務課程','樂齡自主社團'] %}
+                                {% if i == course_dict['course_class'] %}
+                                    <option value='{{ i }}' selected="selected">{{ i }}</option>
+                                {% else %}
+                                    <option value='{{ i }}'>{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_teacher" style="font-size: 20px">授課教師</label>
+                        <input type="text" class="form-control" placeholder="填入授課教師" name="course_teacher" id="course_teacher" value="{{ course_dict['teacher'] }}">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_limit" style="font-size: 20px">限制人數</label>
+                        <input type="text" class="form-control" placeholder="填入限制人數" name="course_limit" id="course_limit" value="{{ course_dict['limit'] }}">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_cost" style="font-size: 20px">材料费</label>
+                        <input type="text" class="form-control" placeholder="填入材料费" name="course_cost" id="course_cost" value="{{ course_dict['cost'] }}">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="course_summary" style="font-size: 20px">課程概述</label>
+                        <textarea class="form-control" placeholder="填入課程概述" name="course_summary" id="course_summary" style="height: 100px">{{ course_dict['summary'] }}</textarea>
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6 form-group">
+                    <button class="btn btn-primary btn-block" type="button" id="submitButton" data-toggle="modal" data-target="#myModal" style="width: 50px">提交</button>
+                </div>
+                <div class="clearfix" style="height: 100px"></div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal -->
+		<form id="confirm" method="post">
+		  	<div class="modal fade" id="myModal" role="dialog">
+		    	<div class="modal-dialog">
+		     	<!-- Modal content-->
+		    		<div class="modal-content">
+		       			<div class="modal-header">
+			          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			          		<h3 class="modal-title">確認課程資料</h3>
+		       			</div>
+		       			<div  class="modal-body form-horizontal">
+					        <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;課程名稱:</label>
+					        	<p id="v1" style="display: inline"></p>
+					        </div>
+					        <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;開課時間:</label>
+					        	<p id="v2" style="display: inline"></p>
+                                <p style="display: inline">年</p>
+                                <p id="v3" style="display: inline"></p>
+                                <p style="display: inline">月</p>
+                                <p id="v12" style="display: inline"></p>
+                                <p style="display: inline">日</p>
+                                <p style="display: inline">星期</p>
+                                <p id="v4" style="display: inline"></p>
+                                <p id="v5" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;開課地點:</label>
+					        	<p id="v6" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;辦理場次:</label>
+					        	<p id="v7" style="display: inline"></p>
+                                <p style="display: inline">堂課&emsp;每堂</p>
+                                <p id="v13" style="display: inline"></p>
+                                <p style="display: inline">小時</p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;課程類型:</label>
+					        	<p id="v8" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;授課教師:</label>
+					        	<p id="v9" style="display: inline"></p>
+                                <p style="display: inline">老師</p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;限制人數:</label>
+					        	<p id="v10" style="display: inline"></p>
+                                <p style="display: inline">人</p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;材料费:</label>
+					        	<p id="v14" style="display: inline"></p>
+                                <p style="display: inline">元</p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;課程概述:</label>
+                                <div class="container" style="width: 550px">
+					        	    <p id="v11" style="display: inline"></p>
+                                </div>
+					        </div>
+                        </div>
+		       			<div class="modal-footer">
+		       				<button type="button" class="btn btn-success" id="coursesubmit">確認修改</button>
+		         		  	<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+		       			</div>
+		     		</div>
+		    	</div>
+		  	</div>
+		</form>
+    <script>
+    $(document).ready(function() {
+        $("#submitButton").click(function () {
+            var v1 = $("#course_name").val();
+            var v2 = $("#course_y option:selected").val();
+            var v3 = $("#course_m option:selected").val();
+            var v12 = $("#course_d option:selected").val();
+            var v4 = $("#course_w option:selected").val();
+            var v5 = $("#course_t option:selected").val();
+            var v6 = $("#course_region").val();
+            var v7 = $("#course_times").val();
+            var v13 = $("#course_duration option:selected").val();
+            var v8 = $("#course_class").val();
+            var v9 = $("#course_teacher").val();
+            var v10 = $("#course_limit").val();
+            var v14 = $("#course_cost").val();
+            var v11 = $("#course_summary").val();
+            v11 = v11.replace(/\n|\r\n/g,"<br>");
+            if(document.getElementById("course_name").value==''){alert('課程名稱不得為空！');$('#course_name').focus();return false;}
+            else if(document.getElementById("course_times").value==''){alert('辦理場次不得為空！');$('#course_times').focus();return false;}
+            else if(document.getElementById("course_teacher").value==''){alert('授課教師不得為空！');$('#course_teacher').focus();return false;}
+            else if(document.getElementById("course_limit").value==''){alert('限制人數不得為空！');$('#course_limit').focus();return false;}
+            else {
+            $('#v1').html(v1);
+            $('#v2').html(v2);
+            $('#v3').html(v3);
+            $('#v12').html(v12);
+            $('#v4').html(v4);
+            $('#v5').html(v5);
+            $('#v6').html(v6);
+            $('#v7').html(v7);
+            $('#v13').html(v13);
+            $('#v8').html(v8);
+            $('#v9').html(v9);
+            $('#v10').html(v10);
+            $('#v14').html(v14);
+            $('#v11').html(v11)
+            }
+        })
+    });
+    $(document).ready(function() {
+        $("#coursesubmit").click(function(){
+              $("form[id='addcourse']").submit();
+         })
+
+    })
+    </script>
+{% endblock %}

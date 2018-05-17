@@ -1,0 +1,134 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/infographic.js') }}"></script>
+    <div class="container" style="width: 1300px">
+        <div class="clearfix" style="height: 40px"></div>
+        <form class="form-inline" method="post">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="mod_year">模型選擇:</label>
+                    <select class="form-control" id="mod_year" name ="mod_year">
+                    {% if mod_require =='0' or mod_require == None%}
+                        <option selected="selected" value="0">總覽</option>
+                        {% for i in alldata %}
+                            <option value="{{ i }}">{{ i }}年餅圖</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="0">總覽</option>
+                        {% for i in alldata %}
+                            {% if i|string == mod_require %}
+                            <option value='{{ i }}' selected="selected">{{ i }}年餅圖</option>
+                            {% else %}
+                            <option value='{{ i }}'>{{ i }}年餅圖</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+                </div>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-default btn-info">查看</button>
+            </div>
+        </form>
+        <div class="clearfix" style="height: 40px"></div>
+        <div id="main1" style="width: 420px;height:400px;float: left"></div>
+        <div id="main2" style="width: 420px;height:400px;float: left"></div>
+        <div id="main3" style="width: 420px;height:400px;float: left"></div>
+    </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var allddata = {{ alldata|tojson }};
+        var keyyear = {{ mod_require }};
+        var regionlist = {{ region_list|tojson }};
+        var myChart1 = echarts.init(document.getElementById('main1'), 'infographic');
+        var myChart2 = echarts.init(document.getElementById('main2'), 'infographic');
+        var myChart3 = echarts.init(document.getElementById('main3'), 'infographic');
+        // 指定图表的配置项和数据
+        var option1 = {
+            title: {
+                text: '課程類別報名比例'
+            },
+            series: [{
+                name: '課程類別',
+                type: 'pie',
+                radius: '40%',
+                data: [
+                    {value:allddata[keyyear]['courses_class_students_number']['樂齡核心課程'], name:'樂齡核心課程'},
+                    {value:allddata[keyyear]['courses_class_students_number']['自主規劃課程'], name:'自主規劃課程'},
+                    {value:allddata[keyyear]['courses_class_students_number']['貢獻服務課程'], name:'貢獻服務課程'},
+                    {value:allddata[keyyear]['courses_class_students_number']['樂齡自主社團'], name:'樂齡自主社團'}
+                ],
+                itemStyle:{
+                    normal:{
+                        label:{
+                            show:true,
+                            formatter:'{b}:\r\n{c} ({d}%)'
+                        },
+                        labelLine:{show:true}
+                    }
+                }
+            }]
+        };
+        myChart1.setOption(option1);
+
+        $(document).ready(function() {
+            var Datadata = [];
+            for (var i = 0; i < regionlist.length; i++){
+                var obj = Object();
+                obj.name = regionlist[i];
+                obj.value = allddata[keyyear]['region_courses_number'][regionlist[i]+'開課數量'];
+                Datadata[i] = obj
+            }
+            myChart2.setOption({
+            title: {
+                text: '地區課程開課比例'
+            },
+            series: [{
+                name: '開課數量',
+                type: 'pie',
+                radius: '40%',
+                data: Datadata,
+                itemStyle:{
+                    normal:{
+                        label:{
+                            show:true,
+                            formatter:'{b}:\r\n{c} ({d}%)'
+                        },
+                        labelLine:{show:true}
+                    }
+                }
+            }]
+            });
+        });
+
+        $(document).ready(function() {
+            var Datadata = [];
+            for (var i = 0; i < regionlist.length; i++){
+                var obj = Object();
+                obj.name = regionlist[i];
+                obj.value = allddata[keyyear]['region_courses_students_number'][regionlist[i]+'上課人數'];
+                Datadata[i] = obj
+            }
+            myChart3.setOption({
+            title: {
+                text: '地區學員報名比例'
+            },
+            series: [{
+                name: '學員人數',
+                type: 'pie',
+                radius: '40%',
+                data: Datadata,
+                itemStyle:{
+                    normal:{
+                        label:{
+                            show:true,
+                            formatter:'{b}:\r\n{c} ({d}%)'
+                        },
+                        labelLine:{show:true}
+                    }
+                }
+            }]
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登入-樂齡數據後台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
+
+<body>
+    <div class="container" style="height: auto;min-height: 150px">
+        <div class="row">
+            <img class="img-responsive" src="../../static/image/banner_stage.jpg" >
+        </div>
+        <div class="container" style="height: auto;min-height: 10px">
+            <div class="form-group">
+                {% if get_flashed_messages() %}
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>系統訊息：</strong>
+                        {% for message in get_flashed_messages() %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <form class="well well-lg col-xs-12 col-sm-6 col-sm-offset-3" role="form" method="post" id="login" name="login">
+            <h3 class="form-group" style="text-align: center">請依使用身份輸入帳號密碼</h3>
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" name="username" placeholder="請輸入賬號">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" autocomplete="off">
+            </div>
+            <button class="btn btn-primary btn-block" type="submit" id="loginsubmit" name="loginsubmit">登入</button>
+        </form>
+    </div>
+    <div class="container" style="height:auto;padding: 1px;">
+		<div class="alert alert-warning" role="alert" style="margin-bottom: 1px;text-align:center;">
+			<p>※ 在使用系統資料填報、修改、下載等相關操作時，請使用最新版本的瀏覽器進行操作，建議使用 Google Chrome 瀏覽器。</p>
+			<p>※ 本網站資料版權為教育部及宜蘭市樂齡中心(宜蘭市復興國中)所有。</p>
+			<p>※ 如果操作上之問題請洽：宜蘭市復興國中補校 (03)9322942-5091/5092</p>
+		</div>
+	</div>
+</body>
+</html>

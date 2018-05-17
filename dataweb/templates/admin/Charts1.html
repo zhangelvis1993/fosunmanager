@@ -1,0 +1,124 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/infographic.js') }}"></script>
+    <div class="container" style="width: 1300px">
+        <div class="clearfix" style="height: 40px"></div>
+        <form class="form-inline" method="post">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="mod_year">模型選擇:</label>
+                    <select class="form-control" id="mod_year" name ="mod_year">
+                    {% if mod_require =='0' or mod_require == None%}
+                        <option selected="selected" value="0">總覽</option>
+                        {% for i in alldata %}
+                            <option value="{{ i }}">{{ i }}年餅圖</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="0">總覽</option>
+                        {% for i in alldata %}
+                            {% if i|string == mod_require %}
+                            <option value='{{ i }}' selected="selected">{{ i }}年餅圖</option>
+                            {% else %}
+                            <option value='{{ i }}'>{{ i }}年餅圖</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+                </div>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-default btn-info">查看</button>
+            </div>
+        </form>
+        <div class="clearfix" style="height: 40px"></div>
+        <div id="main1" style="width: 420px;height:400px;float: left"></div>
+        <div id="main2" style="width: 420px;height:400px;float: left"></div>
+        <div id="main3" style="width: 420px;height:400px;float: left"></div>
+    </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var alldatalen = {{ lens|tojson }};
+        var allddata = {{ alldata|tojson }};
+        var keyyear = {{ key_year }};
+        var myChart1 = echarts.init(document.getElementById('main1'), 'infographic');
+        var myChart2 = echarts.init(document.getElementById('main2'), 'infographic');
+        var myChart3 = echarts.init(document.getElementById('main3'), 'infographic');
+        // 指定图表的配置项和数据
+        var option1 = {
+            title: {
+                text: '課程開課數量'
+            },
+            tooltip: {},
+            legend: {},
+            xAxis: {
+                data: []},
+            yAxis: {},
+            series: [{
+                name: '開課數量',
+                type: 'bar',
+                data: []
+            }]
+        };
+        $(document).ready(function() {
+            for (var i = 0; i < alldatalen; i++){
+                var x1 = keyyear[i].toString();
+                var x2 = parseInt(allddata[keyyear[i]]['year_courses']);
+                option1.xAxis.data.push(x1);
+                option1.series[0].data.push(x2);
+            }
+            myChart1.setOption(option1);
+        });
+        // 使用刚指定的配置项和数据显示图表。
+        var option2 = {
+            title: {
+                text: '學員報名人次'
+            },
+            tooltip: {},
+            legend: {},
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '報名人次',
+                type: 'bar',
+                data: []
+            }]
+        };
+        $(document).ready(function() {
+            for (var i = 0; i < alldatalen; i++){
+                var x1 = keyyear[i].toString();
+                var x2 = parseInt(allddata[keyyear[i]]['year_students']);
+                option2.xAxis.data.push(x1);
+                option2.series[0].data.push(x2);
+            }
+            myChart2.setOption(option2);
+        });
+
+        var option3 = {
+            title: {
+                text: '地區拓點數量'
+            },
+            tooltip: {},
+            legend: {},
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '拓點數量',
+                type: 'bar',
+                data: []
+            }]
+        };
+        $(document).ready(function() {
+            for (var i = 0; i < alldatalen; i++){
+                var x1 = keyyear[i].toString();
+                var x2 = parseFloat(allddata[keyyear[i]]['region_number']);
+                option3.xAxis.data.push(x1);
+                option3.series[0].data.push(x2);
+            }
+            myChart3.setOption(option3);
+        });
+    </script>
+{% endblock %}

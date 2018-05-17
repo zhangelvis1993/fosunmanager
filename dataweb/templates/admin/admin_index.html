@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理員-樂齡數據後台</title>
+    <!-- jquery需要在bootstrap之前导入，否则会覆盖导致dropdown无效 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='DataTables-1.10.15/media/css/dataTables.bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/media/js/dataTables.bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='DataTables-1.10.15/extensions/Buttons/css/buttons.bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/extensions/Buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/extensions/Buttons/js/buttons.bootstrap.min.js') }}"></script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse" style="font-size: large;">
+	    <div class="container-fluid">
+		    <div class="collapse navbar-collapse" id="myNavbar">
+			    <ul class="nav navbar-nav">
+				    <li class="dropdown">
+					    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            查詢
+                            <b class="caret"></b>
+                        </a>
+					    <ul class="dropdown-menu">
+                            <li><a href="/admin/search_student">學員資訊查詢</a></li>
+                            <li><a href="/admin/search_course">課程資訊查詢</a></li>
+					    </ul>
+				    </li>
+				    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            添加
+                            <b class="caret"></b>
+                        </a>
+					    <ul class="dropdown-menu">
+						    <li><a href="/admin/add_student">添加新學員</a></li>
+                            <li><a href="/admin/add_course">添加新課程</a></li>
+					    </ul>
+                    </li>
+                    <li>
+                        <a href="/admin/Charts">統計分析圖</a>
+                    </li>
+                    <li>
+                        <a href="/admin/Upload">資料上傳</a>
+                    </li>
+			    </ul>
+        	    <ul  class="nav navbar-nav navbar-right">
+				    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span class="caret"></span>
+                        </a>
+					    <ul class="dropdown-menu" role="menu">
+						    <li class="dropdown-header">
+                                {{ session['log_in'] }}
+                            </li>
+                            <li><a href="/admin/Personal_Modify">個人資料更改</a></li>
+						    <li>
+                                <a href="/logout" onclick="return confirm('確定登出？')">
+                                <span class="glyphicon glyphicon-log-out"></span>登出
+                                </a>
+                            </li>
+					    </ul>
+                    </li>
+			    </ul>
+		    </div>
+	    </div>
+    </nav>
+    {% block content %}
+        <div style="height: 200px"></div>
+        <div style="width:260px;margin:1px auto;min-height:400px;">
+            <div class="clr" style="border-bottom-style: none;">
+                <h1><b>左上角選擇功能</b></h1>
+            </div>
+        </div>
+    {% endblock %}
+    <footer class="footer navbar-fixed-bottom" style="text-align: center">
+	    <div id="container">Made by Elvis @ 宜蘭市樂齡中心</div>
+    </footer>
+</body>
+</html>

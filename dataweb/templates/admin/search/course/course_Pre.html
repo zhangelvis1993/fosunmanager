@@ -1,0 +1,73 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+	    	<div class="panel panel-primary" style="width: 600px">
+		    	<div class="panel-heading">
+                    <h3 class="modal-title">課程詳情</h3>
+                </div>
+                <div  class="panel-body form-horizontal" style="font-size: large">
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;課程名稱:</label>
+                        <p style="display: inline">{{ course_dict['name'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;課程類型:</label>
+                        <p style="display: inline">{{ course_dict['course_class'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;開課時間:</label>
+                        <p style="display: inline">{{ course_dict['year'] }}年{{ course_dict['start_m'] }}月{{ course_dict['start_d'] }}日</p>
+                        <p style="display: inline">&emsp;星期{{ course_dict['start_w'] }}&nbsp;{{ course_dict['start_t'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;上課次數:</label>
+                        <p style="display: inline">{{ course_dict['times'] }}堂 每堂{{ course_dict['duration'] }}小時</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;上課地點:</label>
+                        <p style="display: inline">{{ course_dict['region'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;授課老師:</label>
+                        <p style="display: inline">{{ course_dict['teacher'] }} 老師</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;人數上限:</label>
+                        <p style="display: inline">{{ course_dict['limit'] }} 人</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc">&emsp;&emsp;材料費:</label>
+                        <p style="display: inline">{{ course_dict['cost'] }} 元</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label userAcc" for="v1">&emsp;&emsp;課程概述:</label>
+                        <div class="container" style="width: 550px">
+                            <p id="v1"></p>
+                        </div>
+                    </div>
+                    {% if studentlist %}
+                        <div class="form-group">
+                            <label class="control-label userAcc">&emsp;&emsp;已報名學員:</label>
+                            <div class="container" style="width: 550px">
+                            {% for each in studentlist %}
+                                <p style="display: inline">{{ each }}；</p>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <a class="pull-right btn btn-primary" href="/admin/search_course">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var content = {{ course_dict['summary']|tojson }};
+            content = content.replace(/\n|\r\n|\r/g,"<br>");
+            $('#v1').html(content);
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,47 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>管理員-樂齡數據後台</title>
+    <!-- jquery需要在bootstrap之前导入，否则会覆盖导致dropdown无效 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='DataTables-1.10.15/media/css/dataTables.bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/media/js/dataTables.bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='DataTables-1.10.15/extensions/Buttons/css/buttons.bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/extensions/Buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables-1.10.15/extensions/Buttons/js/buttons.bootstrap.min.js') }}"></script>
+</head>
+<p>
+<input type="checkbox" id="1" name="changge">
+    <input type="checkbox" id="2" name="changge">
+    <input type="checkbox" id="3" name="changge">
+<label for="1">Using <code>onchange</code>
+    <label for="2">Using <code>onchange</code>
+        <label for="3">Using <code>onchange</code>
+</label> <span id="sp-change"></span>
+    <button id="cb1">点击</button>
+</p>
+
+<script>
+    Array.prototype.indexOf = function(val) {
+for (var i = 0; i < this.length; i++) {
+if (this[i] == val) return i;
+}
+return -1;
+};
+    Array.prototype.remove = function(val) {
+var index = this.indexOf(val);
+if (index > -1) {
+this.splice(index, 1);
+}
+};
+    var emp = ['abs','dsf','sdf','fd'];
+    emp.remove('fd');
+    $("#cb1").click(function () {
+      alert(emp)
+    })
+</script>
+</html>

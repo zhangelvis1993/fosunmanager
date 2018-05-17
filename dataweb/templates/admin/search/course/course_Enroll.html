@@ -1,0 +1,140 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <script>
+    var datalist = [];
+    var datalen = {{ lens|tojson }} + 1;
+    Array.prototype.indexOf = function(val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] == val) return i;
+        }
+        return -1;
+    };
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+    $(document).ready(function() {
+        for (var i = 1; i < datalen; i++) {
+            var v2 = i.toString();
+            (function (arg) {
+                var argdata = arg.toString();
+                $("#" + v2).click(function () {
+                    var v1 = $("#" + arg).is(":checked");
+                    if (v1 == true) {
+                        $("#" + arg).attr("checked", true);
+                        datalist.push(argdata)
+                    }
+                    else if (v1 == false) {
+                        $("#" + arg).attr("checked", false);
+                        datalist.remove(argdata)
+                    }
+                });
+            })(i);
+        }
+    });
+    </script>
+    <div class="container">
+	    <h1><b>課程招生</b></h1>
+        <h3><b>{{ ddd['name'] }}</b></h3>
+        <div class="col-sm-12">
+            <form method="post">
+                <button id="submit" class="btn btn-primary">確認報名</button>
+                <div class="clearfix" style="height: 20px"></div>
+                <table class="table table-hover" id="DataTable" style="word-break: break-all; font-size: large">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px">選擇</th>
+                        <th style="width: 70px">姓名</th>
+                        <th style="width: 70px">身份證號</th>
+                        <th style="width: 70px">出生日期</th>
+                        <th style="width: 70px">手機</th>
+                        <th style="width: 70px">座機</th>
+                    </tr>
+                    </thead>
+                    <tbody onload="">
+                    {% for i in range(lens) %}
+                        <tr>
+                            <td>
+                                <label>
+                                    {% if student_dict[i]['id'] in lc %}
+                                        <input type="checkbox" name="target" value="{{ student_dict[i]['id'] }}" id="{{ student_dict[i]['id'] }}" checked="checked">
+                                    {% else %}
+                                        <input type="checkbox" name="target" value="{{ student_dict[i]['id'] }}" id="{{ student_dict[i]['id'] }}">
+                                    {% endif %}
+                                </label>
+                            </td>
+                            {% for ii in range(5) %}
+                                <td>{{ student_list[i][ii] }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        for (var ii = 1; ii < datalen; ii++) {
+            (function (arg2) {
+                var argdata = arg2.toString();
+                var v3 = $("#" + arg2).is(":checked");
+                if (v3 == true) {
+                    datalist.push(argdata)
+                }
+                else if (v3 == false) {
+                    datalist.remove(argdata)
+                }
+            })(ii);
+        }
+    });
+    $(document).ready(function() {
+        var table = $('#DataTable').DataTable({
+            language: {
+                "sProcessing": "處理中...",
+                "sLengthMenu": "顯示 _MENU_ 項結果",
+                "sZeroRecords": "沒有匹配結果",
+                "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                "sInfoFiltered": "(由 _MAX_ 項結果過濾)",
+                "sInfoPostFix": "",
+                "sSearch": "搜尋:",
+                "sUrl": "",
+                "sEmptyTable": "表中數據為空",
+                "sLoadingRecords": "載入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首頁",
+                    "sPrevious": "上頁",
+                    "sNext": "下頁",
+                    "sLast": "末頁"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列",
+                    "sSortDescending": ": 以降序排列"
+                }
+            },
+            dom: "<'row'<'col-sm-1'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "bSort": false,
+
+            "pagingType": "full_numbers"
+        });
+        $("#submit").click(function(){
+            var data = {
+                data : JSON.stringify(datalist)
+            };
+            $.ajax({
+                type: "POST",
+                url: '/admin/c_Enrollsuccess{{ c_id|tojson }}',
+                data: data,
+                success: function() {
+                }
+            });
+        })
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+        <div>
+            <div class="form-group">
+                {% if get_flashed_messages() %}
+                    <div class="alert alert-warning">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong></strong>
+                        {% for message in get_flashed_messages() %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <form method=post enctype=multipart/form-data>
+                <label for="xdoc1" style="font-size: large">學生文檔</label>
+                <b>(請將文檔命名為Students并且內容應依循下圖的格式)</b>
+                <img class="img-responsive" src="../../static/image/studentsupload.png" >
+                <div class="clearfix" style="height: 5px"></div>
+                <input type=file name=xdoc1 id="xdoc1">
+                <div class="clearfix" style="height: 50px"></div>
+                <label for="xdoc2" style="font-size: large">課程文檔</label>
+                <b>(請將文檔命名為Courses并且內容應依循下圖的格式)</b>
+                <p>※注意：時刻/地區/時長/類別請參考「添加新課程」對應項目中有的選項來進行填寫</p>
+                <img class="img-responsive" src="../../static/image/coursesupload.png" >
+                <div class="clearfix" style="height: 5px"></div>
+                <input type=file name=xdoc2 id="xdoc2">
+                <div class="clearfix" style="height: 50px"></div>
+                <input type=submit value=文檔上傳>
+            </form>
+        </div>
+    </div>
+{% endblock %}

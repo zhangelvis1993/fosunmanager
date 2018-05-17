@@ -1,0 +1,22 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div style="height: 200px"></div>
+    <div style="width:350px;margin:1px auto;min-height:400px;">
+        <div class="clr" style="border-bottom-style: none;">
+            <h4 class="refresh_text">密碼修改成功！<strong id="second_show">3</strong>秒後返回登入界面。</h4>
+        </div>
+    </div>
+    <script type="text/javascript">
+    var timeout = 3;
+    function showError() {
+        document.getElementById("second_show").innerHTML = timeout;
+        timeout--;
+        if (timeout == 0) {
+            window.location.href = "/";
+        } else {
+            setTimeout("showError()", 1000);
+        }
+    }
+    showError();
+    </script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+	    <h1><b>課程報名</b></h1>
+        <h3><b>{{ ddd['name'] }}</b></h3>
+        <form method="POST">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 20px">選擇</th>
+                        <th style="width: 60px">課程</th>
+                        <th style="width: 30px">開課時間</th>
+                        <th style="width: 30px">教師</th>
+                        <th style="width: 40px">地點</th>
+                        <th style="width: 30px">場次</th>
+                        <th style="width: 40px">材料費</th>
+                        <th style="width: 50px">限制人數</th>
+                        <th style="width: 40px">概述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(lens) %}
+                        <tr>
+                            <td>
+                                <label>
+                                    {% if course_dict[i]['id'] in lc %}
+                                        <input type="checkbox" name="target" value="{{ course_dict[i]['id'] }}" checked="checked">
+                                    {% else %}
+                                        <input type="checkbox" name="target" value="{{ course_dict[i]['id'] }}">
+                                    {% endif %}
+                                </label>
+                            </td>
+                            {% for ii in range(7) %}
+                                <td>{{ course_list[i][ii] }}</td>
+                            {% endfor %}
+                            <td id='{{ i }}'></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">確認報名</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var x = {{ lens|tojson }};
+            var list = {{ course_list|tojson }};
+            for (var i=0;i<x;i++){
+                xi = i.toString();
+                var content = list[i][7];
+                content = content.replace(/\n|\r\n|\r/g,"<br>");
+                $('#'+xi).html(content);
+            }
+        })
+    </script>
+{% endblock %}

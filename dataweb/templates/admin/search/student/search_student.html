@@ -1,0 +1,92 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+	    <h1><b>學員資訊</b></h1>
+	    <div class="row table-responsive">
+		    <div class="col-sm-12">
+			    <table class="table table-bordered table-hover" id="DataTable" style="word-break: break-all; font-size: large">
+  				    <thead>
+					    <tr>
+						    <th style="width: 70px">姓名</th>
+						    <th style="width: 110px">手機</th>
+						    <th style="width: 110px">座機</th>
+						    <th style="width: 70px">緊急聯絡人</th>
+						    <th style="width: 110px">緊急聯絡人手機</th>
+						    <th style="width: 110px">緊急聯絡人座機</th>
+                            <th style="width: 60px">操作</th>
+				    	</tr>
+				    </thead>
+			    	<tbody>
+                        {% for i in range(lens) %}
+                            <tr>
+                                {% for ii in range(6) %}
+                                    <td>{{ student_list[i][ii] }}</td>
+                                {% endfor %}
+						    	<td><a class="fa fa-info-circle fa-lg" href="/admin/search_student/U_Have_A_Preview_Message{{ student_dict[i] }}" title="瀏覽詳情"></a>
+							    	<a class="fa fa-pencil-square-o fa-lg" href="/admin/search_student/U_Have_A_Updata_Message{{ student_dict[i] }}" title="更新資料"></a>
+                                    <a class="fa fa-check-square-o fa-lg" href="/admin/search_student/Enroll{{ student_dict[i] }}" title="課程報名"></a>
+                                    &nbsp;&nbsp;
+							    	<a class="fa fa-trash-o fa-lg delete" href="/admin/search_student/U_Have_A_Delete_Message{{ student_dict[i] }}" title="刪除該條"></a>
+							    </td>
+						    </tr>
+                        {% endfor %}
+				    </tbody>
+    			</table>
+	    	</div>
+	    </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var table = $('#DataTable').DataTable({
+            language: {
+                "sProcessing": "處理中...",
+                "sLengthMenu": "顯示 _MENU_ 項結果",
+                "sZeroRecords": "沒有匹配結果",
+                "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                "sInfoFiltered": "(由 _MAX_ 項結果過濾)",
+                "sInfoPostFix": "",
+                "sSearch": "搜尋:",
+                "sUrl": "",
+                "sEmptyTable": "表中數據為空",
+                "sLoadingRecords": "載入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首頁",
+                    "sPrevious": "上頁",
+                    "sNext": "下頁",
+                    "sLast": "末頁"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列",
+                    "sSortDescending": ": 以降序排列"
+                }
+            },
+            dom:
+            "<'row'<'col-sm-2'f><'col-sm-10 text-right'B>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [
+                {
+                    text: '下載學員名單',
+                    className: 'btn-danger',
+                    action: function ( e, dt, node, config ) {
+                        location.href = '/admin/students_Download';
+                    }
+                },
+                {
+                    text: '新增',
+                    className: 'btn-info',
+                    action: function ( e, dt, node, config ) {
+                        location.href = '/admin/add_student';
+                    }
+                }
+                ],
+            "bSort": false
+        });
+        table.on('click', '.delete', function(){
+            return confirm('是否確定刪除這筆資料？');
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form role="form" id="addregion" method="post">
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="region_name" style="font-size: 30px">刪除開課地點</label>
+                        <div class="clearfix"></div>
+                        <div style="float: left">
+                            <select class="form-control" id="region_name" name="region_name" style="width: 200px">
+                            {% for i in region_list %}
+                                <option value='{{ i }}'>{{ i }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6 form-group">
+                    <button class="btn btn-primary btn-block" type="submit" style="width: 50px">刪除</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

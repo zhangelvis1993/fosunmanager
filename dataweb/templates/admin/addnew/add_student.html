@@ -1,0 +1,210 @@
+{% extends 'admin/admin_index.html' %}
+{% block content %}
+    <div class="container">
+        <div>
+            <div class="form-group">
+                {% if get_flashed_messages() %}
+                    <div class="alert alert-warning">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong></strong>
+                        {% for message in get_flashed_messages() %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <h2>新增學員資料</h2>
+        <div class="row">
+            <form role="form" id="addstudent" method="post">
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_name" style="font-size: 20px">學員姓名</label>
+                        <input type="text" class="form-control" placeholder="填入學員姓名" name="student_name" id="student_name">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_id" style="font-size: 20px">身份證號</label>
+                        <input type="text" class="form-control" placeholder="填入學員身份證號" name="student_id" id="student_id">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_tel" style="font-size: 20px">手機號碼</label>
+                        <input type="text" class="form-control" placeholder="填入學員手機號碼" name="student_tel" id="student_tel">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_phone" style="font-size: 20px">座机號碼</label>
+                        <input type="text" class="form-control" placeholder="填入學員座机號碼" name="student_phone" id="student_phone">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label style="font-size: 20px">出生日期</label>
+                        <div>
+                            <label for="birth_y" style="float: left">年份&nbsp;</label>
+                            <select class="form-control" id="birth_y" name="birth_y" style="width: 80px;float: left">
+                                {% for i in range(10, 100) %}
+                                    <option value='{{ i }}'>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="birth_m" style="float: left">月份&nbsp;</label>
+                            <select class="form-control" id="birth_m" name="birth_m" style="width: 70px;float: left">
+                                {% for i in range(1, 13) %}
+                                    <option value='{{ i }}'>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <p style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <label for="birth_d" style="float: left">日期&nbsp;</label>
+                            <select class="form-control" id="birth_d" name="birth_d" style="width: 70px;float: left">
+                                {% for i in range(1, 32) %}
+                                    <option value='{{ i }}'>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="clearfix" style="height: 10px"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_address" style="font-size: 20px">學員住址</label>
+                        <input type="text" class="form-control" placeholder="填入學員住址" name="student_address" id="student_address">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_emname" style="font-size: 20px">緊急聯絡人姓名</label>
+                        <input type="text" class="form-control" placeholder="填入紧急联络人姓名" name="student_emname" id="student_emname">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_emtel" style="font-size: 20px">緊急聯絡人手機</label>
+                        <input type="text" class="form-control" placeholder="填入緊急聯絡人的手機號碼" name="student_emtel" id="student_emtel">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6">
+				    <div class="form-group">
+					    <label for="student_emphone" style="font-size: 20px">緊急聯絡人座機</label>
+                        <input type="text" class="form-control" placeholder="填入緊急聯絡人的座機號碼" name="student_emphone" id="student_emphone">
+                    </div>
+				</div>
+                <div class="clearfix"></div>
+                <div class="col-sm-6 form-group">
+                    <button class="btn btn-primary btn-block" type="button" id="submitButton" data-toggle="modal" data-target="#myModal" style="width: 50px">提交</button>
+                </div>
+                <div class="clearfix" style="height: 100px"></div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal -->
+		<form id="confirm" method="post">
+		  	<div class="modal fade" id="myModal" role="dialog">
+		    	<div class="modal-dialog">
+		     	<!-- Modal content-->
+		    		<div class="modal-content">
+		       			<div class="modal-header">
+			          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			          		<h3 class="modal-title">確認學員資料</h3>
+		       			</div>
+		       			<div  class="modal-body form-horizontal">
+					        <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;學員姓名:</label>
+					        	<p id="v1" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;身份證號:</label>
+					        	<p id="v2" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;手機號碼:</label>
+					        	<p id="v3" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;座機號碼:</label>
+					        	<p id="v4" style="display: inline"></p>
+					        </div>
+					        <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;出生日期:</label>
+					        	<p id="v5" style="display: inline"></p>
+                                <p style="display: inline">年</p>
+                                <p id="v6" style="display: inline"></p>
+                                <p style="display: inline">月</p>
+                                <p id="v11" style="display: inline"></p>
+                                <p style="display: inline">日</p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;學員住址:</label>
+					        	<p id="v7" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;緊急聯絡人姓名:</label>
+					        	<p id="v8" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;緊急聯絡人手機:</label>
+					        	<p id="v9" style="display: inline"></p>
+					        </div>
+                            <div class="form-group">
+					        	<label class="control-label userAcc">&emsp;&emsp;緊急聯絡人座機:</label>
+					        	<p id="v10" style="display: inline"></p>
+					        </div>
+                        </div>
+		       			<div class="modal-footer">
+		       				<button type="button" class="btn btn-success" id="coursesubmit">確認提交</button>
+		         		  	<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+		       			</div>
+		     		</div>
+		    	</div>
+		  	</div>
+		</form>
+    <script>
+    $(document).ready(function() {
+        $("#submitButton").click(function () {
+            var v1 = $("#student_name").val();
+            var v2 = $("#student_id").val();
+            var v3 = $("#student_tel").val();
+            var v4 = $("#student_phone").val();
+            var v5 = $("#birth_y option:selected").val();
+            var v6 = $("#birth_m option:selected").val();
+            var v11 = $("#birth_d option:selected").val();
+            var v7 = $("#student_address").val();
+            var v8 = $("#student_emname").val();
+            var v9 = $("#student_emtel").val();
+            var v10 = $("#student_emphone").val();
+            if(document.getElementById("student_name").value==''){alert('學員名稱不得為空！');$('#student_name').focus();return false;}
+            else {
+            $('#v1').html(v1);
+            $('#v2').html(v2);
+            $('#v3').html(v3);
+            $('#v4').html(v4);
+            $('#v5').html(v5);
+            $('#v6').html(v6);
+            $('#v7').html(v7);
+            $('#v8').html(v8);
+            $('#v9').html(v9);
+            $('#v10').html(v10);
+            $('#v11').html(v11);
+            }
+        })
+    });
+    $(document).ready(function() {
+        $("#coursesubmit").click(function(){
+              $("form[id='addstudent']").submit();
+         })
+
+    })
+    </script>
+{% endblock %}
